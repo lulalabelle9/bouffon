@@ -14,11 +14,14 @@
       font-family: Arial, sans-serif;
       text-align: center;
       overflow: hidden;
+      flex-direction: column;
     }
 
     h1 {
       font-size: 2em;
       max-width: 80%;
+      line-height: 1.5em;
+      white-space: pre-line; /* pour garder les sauts de ligne */
     }
 
     .star {
@@ -47,16 +50,38 @@
 <h1 id="message"></h1>
 
 <script>
-  const text = "Merci de tout coeur pour ton message, et le fait d'y avoir pensé. Tu restes un bouffon. <3 Et tu t'es trompé, jai 18 ans aujourd'hui";
-  let i = 0;
+  const phrases = [
+    "Merci de tout coeur pour ton message, et le fait d'y avoir pensé.",
+    "Tu restes un bouffon. <3",
+    "Et tu t'es trompé, jai 18 ans aujourd'hui"
+  ];
 
-  function typing() {
-    if (i < text.length) {
-      document.getElementById("message").innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typing, 60);
+  const messageElement = document.getElementById("message");
+  let phraseIndex = 0;
+
+  function typePhrase(phrase, callback) {
+    let i = 0;
+    function typing() {
+      if (i < phrase.length) {
+        messageElement.innerHTML += phrase.charAt(i);
+        i++;
+        setTimeout(typing, 60);
+      } else {
+        messageElement.innerHTML += "\n"; // saut de ligne après chaque phrase
+        setTimeout(callback, 800); // délai entre les phrases
+      }
+    }
+    typing();
+  }
+
+  function startTyping() {
+    if (phraseIndex < phrases.length) {
+      typePhrase(phrases[phraseIndex], () => {
+        phraseIndex++;
+        startTyping();
+      });
     } else {
-      setTimeout(startStars, 1000);
+      setTimeout(startStars, 1000); // lancement des étoiles après le texte
     }
   }
 
@@ -67,18 +92,13 @@
   function createStar() {
     const star = document.createElement("div");
     star.classList.add("star");
-
     star.style.left = Math.random() * window.innerWidth + "px";
     star.style.animationDuration = (Math.random() * 2 + 1) + "s";
-
     document.body.appendChild(star);
-
-    setTimeout(() => {
-      star.remove();
-    }, 3000);
+    setTimeout(() => star.remove(), 3000);
   }
 
-  typing();
+  startTyping();
 </script>
 
 </body>
