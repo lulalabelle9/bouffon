@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pour toi ✨</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2em;
+      max-width: 80%;
+    }
+
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      from {
+        transform: translateY(-10px);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1 id="message"></h1>
+
+<script>
+  const text = "Je pouvais pas faire moins bien que toi… ✨ Merci pour ton message, ça m’a vraiment touché.";
+  let i = 0;
+
+  function typing() {
+    if (i < text.length) {
+      document.getElementById("message").innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, 60);
+    } else {
+      setTimeout(startStars, 1000);
+    }
+  }
+
+  function startStars() {
+    setInterval(createStar, 50);
+  }
+
+  function createStar() {
+    const star = document.createElement("div");
+    star.classList.add("star");
+
+    star.style.left = Math.random() * window.innerWidth + "px";
+    star.style.animationDuration = (Math.random() * 2 + 1) + "s";
+
+    document.body.appendChild(star);
+
+    setTimeout(() => {
+      star.remove();
+    }, 3000);
+  }
+
+  typing();
+</script>
+
+</body>
+</html>
